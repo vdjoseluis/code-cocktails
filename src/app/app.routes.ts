@@ -3,7 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'home',
-    loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent)
+    loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
+    pathMatch: 'full'
   },
   {
     path: 'cocktails',
@@ -12,6 +13,10 @@ export const routes: Routes = [
   {
     path: 'cocktails/:id',
     loadComponent: () => import('./pages/cocktail-details/cocktail-details.component').then((m) => m.CocktailDetailsComponent)
+  },
+  {
+    path: 'favorites',
+    loadComponent: () => import('./pages/favorites-list/favorites-list.component').then((m) => m.FavoritesListComponent)
   },
   {
     path: '**',

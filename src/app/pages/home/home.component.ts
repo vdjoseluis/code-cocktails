@@ -8,7 +8,6 @@ import { CocktailDetailsComponent } from "../cocktail-details/cocktail-details.c
   standalone: true,
   imports: [CocktailDetailsComponent],
   templateUrl: './home.component.html',
-  styles: ``
 })
 export class HomeComponent implements OnInit {
   private cocktailsService = inject(CocktailsService);

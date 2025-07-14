@@ -1,3 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 @plugin "daisyui";
+
+.cocktail-bg {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.cocktail-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('/fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.cocktail-bg > * {
+  position: relative;
+  z-index: 1;
+}
