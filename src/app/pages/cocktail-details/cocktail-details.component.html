@@ -1,1 +1,27 @@
-<p>cocktail-details works!</p>
+@if (!cocktail()) {
+<p>No hay cocktail para mostrar.</p>
+} @else {
+<h2>{{ cocktail()?.strDrink }}</h2>
+<img
+  class="w-1/4"
+  src="{{ cocktail()?.strDrinkThumb }}"
+  alt="{{ cocktail()?.strDrink }}"
+/>
+<p><strong>Category:</strong> {{ cocktail()?.strCategory }}</p>
+<p><strong>Alcoholic:</strong> {{ cocktail()?.strAlcoholic }}</p>
+<p><strong>Glass:</strong> {{ cocktail()?.strGlass }}</p>
+<ul>
+  <strong>Ingredients:</strong>
+  @for (item of ingredients(); track $index) {
+  <li>
+    {{ item.ingredient }}
+    @if (item.measure) {
+    <span>- {{ item.measure }}</span>
+    }
+  </li>
+  }
+</ul>
+
+<p><strong>Instructions:</strong> {{ cocktail()?.strInstructions }}</p>
+
+}
