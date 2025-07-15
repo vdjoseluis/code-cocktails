@@ -22,5 +22,15 @@ export class CocktailsService {
     return this.http.get<{ items: { id: { videoId: string } }[] }>(url);
   }
 
+  getDrinkCategories() {
+    return this.http.get<{ drinks: { strCategory: string }[] }>(`${API_URL}/list.php?c=list`);
+  }
 
+  getDrinksByCategory(category: string) {
+    return this.http.get<DrinksResponse>(`${API_URL}/filter.php?c=${category}`);
+  }
+
+  getDrinkById(id: string) {
+    return this.http.get<DrinksResponse>(`${API_URL}/lookup.php?i=${id}`);
+  }
 }

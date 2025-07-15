@@ -1,1 +1,6 @@
-<p>cocktails-list works!</p>
+<section class="w-full flex gap-4 flex-wrap mt-10 justify-center">
+  @for (drink of drinks(); track drink.idDrink) {
+    <app-cocktail-card [drink]="drink"></app-cocktail-card>
+  }
+</section>
+

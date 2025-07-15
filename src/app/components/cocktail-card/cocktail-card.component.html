@@ -1,1 +1,17 @@
-<p>cocktail-card works!</p>
+<div
+  class="card bg-base-100 w-96 shadow-md shadow-accent-content hover:translate-1.5 transition-all easy-in duration-700"
+>
+  <figure>
+    <img
+      src="{{ drink()?.strDrinkThumb }}"
+      alt="{{ drink()?.strDrink }}"
+      class="hover:scale-125 transition-all ease-in duration-700"
+    />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">{{ drink()?.strDrink }}</h2>
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary btn-xs" routerLink="/cocktails/{{ drink()?.idDrink }}">Details</button>
+    </div>
+  </div>
+</div>

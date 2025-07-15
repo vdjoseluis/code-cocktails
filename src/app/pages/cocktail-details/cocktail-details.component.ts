@@ -1,6 +1,7 @@
-import { Component, computed, inject, input, signal, effect } from '@angular/core';
+import { Component, computed, inject, input, signal, effect, OnInit } from '@angular/core';
 import { Drink } from '../../interfaces/cocktails.interface';
 import { CocktailsService } from '../../services/cocktails.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cocktail-details',
@@ -8,14 +9,15 @@ import { CocktailsService } from '../../services/cocktails.service';
   imports: [],
   templateUrl: './cocktail-details.component.html',
 })
-export class CocktailDetailsComponent {
+export class CocktailDetailsComponent implements OnInit {
   private cocktailsService = inject(CocktailsService);
+  private route = inject(ActivatedRoute);
   cocktail = input.required<Drink | null>();
+  drink = signal<Drink | null>(null);
   videoUrl = signal<string | null>(null);
 
-  // Mueve el effect aquí, en el cuerpo de la clase
   private _videoEffect = effect(() => {
-    const name = this.cocktail()?.strDrink;
+    const name = this.drink()?.strDrink;
     if (!name) {
       this.videoUrl.set(null);
       return;
@@ -31,7 +33,7 @@ export class CocktailDetailsComponent {
   });
 
   ingredients = computed(() => {
-    const c = this.cocktail();
+    const c = this.drink();
     if (!c) return [];
     const result: { ingredient: string; measure: string }[] = [];
     for (let i = 1; i <= 15; i++) {
@@ -43,4 +45,13 @@ export class CocktailDetailsComponent {
     }
     return result;
   });
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      this.cocktailsService.getDrinkById(id).subscribe(res => {
+        this.drink.set(res.drinks[0]);
+      });
+    });
+  }
 }

@@ -1,5 +1,10 @@
 <nav class="navbar bg-base-100 fixed top-0 left-0 w-full z-50">
-  <img src="code-cocktails-logo.svg" class="absolute top-2 left-translate-x-1/2 h-20 md:h-32 z-50">
+  <img
+    src="code-cocktails-logo.svg"
+    class="absolute top-2 left-translate-x-1/2 h-20 md:h-32 z-50 hover:cursor-pointer"
+    alt="Code & Cocktails Logo"
+    routerLink="home"
+  />
   <ul
     class="menu menu-xs sm:menu-md menu-horizontal bg-base-100 left-40 rounded-box w-full flex justify-end z-48"
   >
@@ -24,23 +29,38 @@
       </a>
     </li>
     <li class="lg:w-[200px]">
-      <a routerLink="cocktails" routerLinkActive="text-primary">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fill="currentColor"
-            d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1m10 10h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1M17 3c-2.206 0-4 1.794-4 4s1.794 4 4 4s4-1.794 4-4s-1.794-4-4-4M7 13c-2.206 0-4 1.794-4 4s1.794 4 4 4s4-1.794 4-4s-1.794-4-4-4"
-          />
-        </svg>
-        Categories
-      </a>
+      <details
+        class="categories-dropdown"
+        [open]="showCategories"
+        routerLinkActive="text-primary"
+      >
+        <summary (click)="toggleCategories()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1m10 10h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1M17 3c-2.206 0-4 1.794-4 4s1.794 4 4 4s4-1.794 4-4s-1.794-4-4-4M7 13c-2.206 0-4 1.794-4 4s1.794 4 4 4s4-1.794 4-4s-1.794-4-4-4"
+            />
+          </svg>
+          Categories
+        </summary>
+        <ul class="bg-base-100 rounded-t-none p-2">
+          @for (item of categories(); track $index) {
+          <li (click)="toggleCategories()">
+            <a routerLink="cocktails/{{ item }}" routerLinkActive="text-primary">
+              {{ item }}
+            </a>
+          </li>
+          }
+        </ul>
+      </details>
     </li>
     <li class="lg:w-[200px]">
-      <a routerLink="cocktails" routerLinkActive="text-primary">
+      <a routerLink="search" routerLinkActive="text-primary">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -52,7 +72,7 @@
             d="M20.832 4.555A1 1 0 0 0 20 3H4a1 1 0 0 0-.832 1.554L11 16.303V20H8v2h8v-2h-3v-3.697zm-2.7.445l-2 3H7.868l-2-3z"
           />
         </svg>
-        Preferences
+        Search
       </a>
     </li>
     <li class="lg:w-[200px]">

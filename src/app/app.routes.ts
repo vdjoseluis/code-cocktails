@@ -7,12 +7,16 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'cocktails',
+    path: 'cocktails/:category',
     loadComponent: () => import('./pages/cocktails-list/cocktails-list.component').then((m) => m.CocktailsListComponent)
   },
   {
     path: 'cocktails/:id',
     loadComponent: () => import('./pages/cocktail-details/cocktail-details.component').then((m) => m.CocktailDetailsComponent)
+  },
+  {
+    path: 'search',
+    loadComponent: () => import('./pages/search-page/search-page.component').then((m) => m.SearchPageComponent)
   },
   {
     path: 'favorites',
