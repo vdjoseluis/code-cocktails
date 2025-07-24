@@ -16,11 +16,11 @@ export class CocktailsService {
     return this.http.get<DrinksResponse>(`${API_URL}/random.php`);
   }
 
-  getVideoId(name: string) {
+  /* getVideoId(name: string) {
     const query = `preparation+${encodeURIComponent(name)}+cocktail`;
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=video&maxResults=1&key=${API_KEY}`;
     return this.http.get<{ items: { id: { videoId: string } }[] }>(url);
-  }
+  } */
 
   getDrinkCategories() {
     return this.http.get<{ drinks: { strCategory: string }[] }>(`${API_URL}/list.php?c=list`);
@@ -32,5 +32,9 @@ export class CocktailsService {
 
   getDrinkById(id: string) {
     return this.http.get<DrinksResponse>(`${API_URL}/lookup.php?i=${id}`);
+  }
+
+  getDrinksByName(name: string) {
+    return this.http.get<DrinksResponse>(`${API_URL}/search.php?s=${name}`);
   }
 }

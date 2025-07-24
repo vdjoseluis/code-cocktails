@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CocktailsService } from '../../services/cocktails.service';
 
 @Component({
   selector: 'app-search-page',
+  standalone: true,
   imports: [],
   templateUrl: './search-page.component.html',
-  styles: ``
 })
 export class SearchPageComponent {
+  private cocktailsService = inject(CocktailsService);
+  
 
 }

@@ -1,6 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { CocktailCardComponent } from "../../components/cocktail-card/cocktail-card.component";
-import { Drink } from '../../interfaces/cocktails.interface';
+import type { Drink } from '../../interfaces/cocktails.interface';
 import { CocktailsService } from '../../services/cocktails.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,14 +10,27 @@ import { ActivatedRoute } from '@angular/router';
   imports: [CocktailCardComponent],
   templateUrl: './cocktails-list.component.html',
 })
-export class CocktailsListComponent implements OnInit {
+export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy {
   private cocktailsService = inject(CocktailsService);
   private route = inject(ActivatedRoute);
+
   drinks = signal<Drink[]>([]);
+  title = signal('');
+  visibleDrinks = signal<Drink[]>([]);
+  private step = 8;
+  @ViewChild('sentinel') sentinel!: ElementRef;
+
+  showScrollTop = signal(false);
+  private scrollListener = () => this.showScrollTop.set(window.scrollY > 200);
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   getDrinksByCategory(category: string) {
     this.cocktailsService.getDrinksByCategory(category).subscribe(res => {
       this.drinks.set(res.drinks);
+      this.visibleDrinks.set(res.drinks.slice(0, this.step));
     });
   }
 
@@ -26,8 +39,36 @@ export class CocktailsListComponent implements OnInit {
       const category = params['category'];
       if (category) {
         this.getDrinksByCategory(category);
+        this.title.set(category+'s');
       }
     });
   }
 
+  ngAfterViewInit(): void {
+    window.addEventListener('scroll', this.scrollListener);
+
+    const observer = new IntersectionObserver(entries => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        this.loadMore();
+      }
+    });
+
+    if (this.sentinel?.nativeElement) {
+      observer.observe(this.sentinel.nativeElement);
+    }
+  }
+
+  loadMore() {
+    const current = this.visibleDrinks();
+    const all = this.drinks();
+    const next = all.slice(current.length, current.length + this.step);
+    this.visibleDrinks.set([...current, ...next]);
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.scrollListener);
+  }
 }
+
+

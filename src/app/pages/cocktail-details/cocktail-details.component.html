@@ -1,27 +1,29 @@
-@if (!cocktail()) {
-<p>No hay cocktail para mostrar.</p>
+@if (!cocktail() ) {
+<p>Cocktail not found.</p>
 } @else {
 <section class="w-full flex flex-col items-center mt-2">
   <h1
-    class="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent drop-shadow-lg mb-8"
+    class="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent drop-shadow-lg mb-8 animate-pulse ease-linear duration-300"
   >
-    Discover New Cocktails!
+    @if (cocktailInput()) { Discover New Cocktails and Drinks ! } @else { Your
+    chosen Drink: }
   </h1>
   <div
-    class="w-96 sm:w-[70%] mx-auto mt-2 card lg:card-side bg-base-100 shadow-sm shadow-accent-content bg-gradient-to-r from-base-200 to-base-100 z-0"
+    class="w-96 sm:w-[70%] mx-auto mt-2 card xl:card-side bg-base-100 shadow-sm shadow-accent-content bg-gradient-to-r from-base-200 to-base-100 z-0"
+    [@fadeInUp]
   >
-    <figure class="z-0">
+    <figure class="z-0 xl:min-w-[40%]">
       <img
         class="object-cover mx-auto z-0"
         src="{{ cocktail()?.strDrinkThumb }}"
         alt="{{ cocktail()?.strDrink }}"
       />
     </figure>
-    <div class="card-body md:card-xl">
+    <div class="card-body min-w-[60%]">
       <h2 class="card-title text-4xl text-primary">
         {{ cocktail()?.strDrink }}
       </h2>
-      <div class="stats shadow flex flex-col md:flex-row">
+      <div class="stats shadow flex flex-col 2xl:flex-row">
         <div class="stat">
           <div class="stat-title">Category</div>
           <div class="stat-value text-accent">
@@ -32,9 +34,11 @@
           </div>
         </div>
         <div class="stat">
+          @if (!isFavorite()) {
           <div
-            class="stat-figure text-secondary hover:text-primary hover:cursor-pointer tooltip tooltip-left tooltip-primary"
+            class="stat-figure text-secondary hover:text-primary hover:cursor-pointer hover:animate-bounce tooltip tooltip-left tooltip-primary"
             data-tip="Add to favorite"
+            (click)="addToFavorite( cocktail() )"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -50,6 +54,12 @@
               ></path>
             </svg>
           </div>
+          } @else {
+          <div class="stat-figure badge badge-secondary py-6">
+            Favorite Drink
+          </div>
+          }
+
           <div class="stat-title">Glass</div>
           <div class="stat-value text-accent">{{ cocktail()?.strGlass }}</div>
           <div class="stat-desc">Favorite</div>
@@ -74,7 +84,7 @@
       <div class="divider"></div>
       @if (videoUrl()) {
       <div
-        class="flex items-center gap-2 text-primary hover:text-red-500 transition duration-300 mt-4"
+        class="flex items-center gap-2 text-primary hover:text-red-500 transition duration-300 mt-4 text-lg"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -92,11 +102,17 @@
           Play Video
         </a>
       </div>
-      }
-
+      } @if (this.location.path() !== '/home') {
       <div class="card-actions justify-end">
-        <button class="btn btn-primary btn-outline w-[100px]">back</button>
+        <button
+          class="btn btn-primary btn-outline w-[100px]"
+          type="button"
+          (click)="goBack()"
+        >
+          back
+        </button>
       </div>
+      }
     </div>
   </div>
 </section>

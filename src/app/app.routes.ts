@@ -8,10 +8,10 @@ export const routes: Routes = [
   },
   {
     path: 'cocktails/:category',
-    loadComponent: () => import('./pages/cocktails-list/cocktails-list.component').then((m) => m.CocktailsListComponent)
+    loadComponent: () => import('./pages/cocktails-list/cocktails-list.component').then((m) => m.CocktailsListComponent),
   },
   {
-    path: 'cocktails/:id',
+    path: 'cocktail/:id',
     loadComponent: () => import('./pages/cocktail-details/cocktail-details.component').then((m) => m.CocktailDetailsComponent)
   },
   {
