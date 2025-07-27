@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { CocktailCardComponent } from "../../components/cocktail-card/cocktail-card.component";
 import type { Drink } from '../../interfaces/cocktails.interface';
 import { CocktailsService } from '../../services/cocktails.service';
@@ -13,6 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy {
   private cocktailsService = inject(CocktailsService);
   private route = inject(ActivatedRoute);
+
+  inputDrinks = input<Drink[] | null>(null);
 
   drinks = signal<Drink[]>([]);
   title = signal('');
@@ -35,13 +37,18 @@ export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const category = params['category'];
-      if (category) {
-        this.getDrinksByCategory(category);
-        this.title.set(category+'s');
-      }
-    });
+    if (this.inputDrinks() != null) {
+      this.drinks.set(this.inputDrinks()!);
+    } else {
+      this.route.params.subscribe(params => {
+        const category = params['category'];
+        if (category) {
+          this.getDrinksByCategory(category);
+          this.title.set(category + 's');
+        }
+      });
+    }
+
   }
 
   ngAfterViewInit(): void {

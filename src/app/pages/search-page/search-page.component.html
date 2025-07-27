@@ -7,10 +7,30 @@
     Find a Drink
   </h1>
   <div class="flex gap-12 mb-4">
-    <input type="text" placeholder="By name ..." class="input" />
-    <button class="btn btn-soft btn-info">Search</button>
+    <input
+      type="text"
+      placeholder="Search by name..."
+      class="input input-bordered w-full"
+      (keyup.enter)="search(txtSearch.value)"
+      #txtSearch
+    />
+    <button class="btn btn-primary" (click)="search(txtSearch.value)">
+      Search
+    </button>
   </div>
-  <div class="divider my-8"><button class="btn btn-outline btn-success tooltip tooltip-right" data-tip="View list" >0 results</button></div>
-
-
+  <div class="divider my-8">
+    <button
+      class="btn btn-outline btn-success tooltip tooltip-right"
+      data-tip="View list"
+      [ngClass]="{ 'btn-disabled': this.drinks().drinks.length === 0 }"
+      (click)="showList()"
+    >
+      @if (this.drinks().drinks.length > 0) {
+      {{ this.drinks().drinks.length }} results } @else { No results }
+    </button>
+  </div>
 </section>
+
+ @if (this.viewList() && this.drinks().drinks.length > 0) {
+   <app-cocktails-list [inputDrinks]="drinks().drinks"></app-cocktails-list>
+ }

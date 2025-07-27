@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { DrinksResponse } from '../interfaces/cocktails.interface';
+import { Observable } from 'rxjs';
 
 const API_URL = environment.apiUrl;
 const API_KEY = environment.apiKey;
@@ -34,7 +35,12 @@ export class CocktailsService {
     return this.http.get<DrinksResponse>(`${API_URL}/lookup.php?i=${id}`);
   }
 
-  getDrinksByName(name: string) {
+  getDrinksByName(name: string): Observable<DrinksResponse> {
     return this.http.get<DrinksResponse>(`${API_URL}/search.php?s=${name}`);
   }
+
+    /* getDrinksByName(query: string): Observable<DrinksResponse[]> {
+      query = query.toLowerCase().trim();
+      return this.http.get<DrinksResponse[]>(`${API_URL}/search.php?s=${query}`);
+    } */
 }
