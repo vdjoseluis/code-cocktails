@@ -19,6 +19,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/search-page/search-page.component').then((m) => m.SearchPageComponent)
   },
   {
+    path: 'search/:query',
+    loadComponent: () => import('./pages/search-page/search-page.component').then((m) => m.SearchPageComponent)
+  },
+  {
     path: 'favorites',
     loadComponent: () => import('./pages/favorites-list/favorites-list.component').then((m) => m.FavoritesListComponent)
   },

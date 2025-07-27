@@ -15,6 +15,7 @@ export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy 
   private route = inject(ActivatedRoute);
 
   inputDrinks = input<Drink[] | null>(null);
+  inputTitle = input<string | null>(null);
 
   drinks = signal<Drink[]>([]);
   title = signal('');
@@ -37,8 +38,9 @@ export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnInit(): void {
-    if (this.inputDrinks() != null) {
+    if (this.inputDrinks() != null && this.inputTitle() != null) {
       this.drinks.set(this.inputDrinks()!);
+      this.title.set(this.inputTitle()!);
     } else {
       this.route.params.subscribe(params => {
         const category = params['category'];
@@ -48,7 +50,6 @@ export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy 
         }
       });
     }
-
   }
 
   ngAfterViewInit(): void {

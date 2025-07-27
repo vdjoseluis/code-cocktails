@@ -1,14 +1,2 @@
-<section class="w-full flex flex-col items-center my-10">
-  <h1
-    class="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent drop-shadow-lg mb-8"
-  >
-    Your Favorite Drinks
-  </h1>
-  <div class="flex gap-4 flex-wrap justify-center">
-    @for (drink of favService.favorites(); track drink.idDrink ?? $index) {
-    <app-cocktail-card [drink]="drink"></app-cocktail-card>
-    } @empty {
-    <p class="text-2xl">You don't have any favorite drinks yet.</p>
-    }
-  </div>
-</section>
+
+<app-cocktails-list [inputDrinks]="favService.favorites()" [inputTitle]="'Your Favorite Drinks'"></app-cocktails-list>
