@@ -33,7 +33,7 @@ export class CocktailDetailsComponent implements OnInit {
 
   isFavorite = signal(false);
 
-  /* private _videoEffect = effect(() => {
+  private _videoEffect = effect(() => {
     const name = this.cocktail()?.strDrink;
     if (!name) {
       this.videoUrl.set(null);
@@ -47,7 +47,7 @@ export class CocktailDetailsComponent implements OnInit {
         this.videoUrl.set(null);
       }
     });
-  }); */
+  });
 
   ingredients = computed(() => {
     const c = this.cocktail();
