@@ -2,11 +2,9 @@ import { computed, Injectable, signal } from '@angular/core';
 import type { Drink } from '../interfaces/cocktails.interface';
 import { filter, from, fromEvent, pipe } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class FavoritesService {
-  private load() {
+  private load(): Drink[] {
     return JSON.parse(localStorage.getItem('favoriteDrinks') || '[]');
   }
 
@@ -38,7 +36,7 @@ export class FavoritesService {
 
   constructor() {
     fromEvent<StorageEvent>(window, 'storage')
-      .pipe(filter((event) => event.key === 'favoriteDrinks'))
+      .pipe(filter(event => event.key === 'favoriteDrinks'))
       .subscribe(() => this._favorites.set(this.load()));
   }
 }

@@ -14,11 +14,11 @@ export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy 
   private cocktailsService = inject(CocktailsService);
   private route = inject(ActivatedRoute);
 
-  inputDrinks = input<Drink[] | null>(null);
-  inputTitle = input<string | null>(null);
-
   drinks = signal<Drink[]>([]);
   title = signal('');
+
+  inputDrinks = input<Drink[] | null>();
+
   visibleDrinks = signal<Drink[]>([]);
   private step = 8;
   @ViewChild('sentinel') sentinel!: ElementRef;
@@ -38,17 +38,16 @@ export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnInit(): void {
-    if (this.inputDrinks() != null && this.inputTitle() != null) {
+    this.route.params.subscribe(params => {
+      const category = params['category'];
+      if (category) {
+        this.getDrinksByCategory(category);
+        this.title.set(category+'s');
+      }
+    });
+    if (this.inputDrinks()) {
       this.drinks.set(this.inputDrinks()!);
-      this.title.set(this.inputTitle()!);
-    } else {
-      this.route.params.subscribe(params => {
-        const category = params['category'];
-        if (category) {
-          this.getDrinksByCategory(category);
-          this.title.set(category + 's');
-        }
-      });
+      this.visibleDrinks.set(this.inputDrinks()!.slice(0, this.step));
     }
   }
 
@@ -78,5 +77,3 @@ export class CocktailsListComponent implements OnInit, AfterViewInit, OnDestroy 
     window.removeEventListener('scroll', this.scrollListener);
   }
 }
-
-

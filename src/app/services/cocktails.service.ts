@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { DrinksResponse } from '../interfaces/cocktails.interface';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 
 const API_URL = environment.apiUrl;
 const API_KEY = environment.apiKey;
@@ -12,6 +12,8 @@ const API_KEY = environment.apiKey;
 })
 export class CocktailsService {
   private http = inject(HttpClient);
+
+  private queryCacheDrinks = new Map<string, DrinksResponse>();
 
   getRandomCocktail() {
     return this.http.get<DrinksResponse>(`${API_URL}/random.php`);
@@ -36,11 +38,18 @@ export class CocktailsService {
   }
 
   getDrinksByName(name: string): Observable<DrinksResponse> {
-    return this.http.get<DrinksResponse>(`${API_URL}/search.php?s=${name}`);
+    name = name.toLowerCase().trim();
+
+    if (this.queryCacheDrinks.has(name)) {
+      return of(this.queryCacheDrinks.get(name) ?? { drinks: [] });
+    }
+
+    return this.http.get<DrinksResponse>(`${API_URL}/search.php?s=${name}`)
+      .pipe(tap(response => {
+        this.queryCacheDrinks.set(name, response)
+        
+      }),
+      catchError(() => throwError(() => new Error('Cocktail not found'))));
   }
 
-    /* getDrinksByName(query: string): Observable<DrinksResponse[]> {
-      query = query.toLowerCase().trim();
-      return this.http.get<DrinksResponse[]>(`${API_URL}/search.php?s=${query}`);
-    } */
 }

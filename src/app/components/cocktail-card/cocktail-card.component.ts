@@ -23,6 +23,7 @@ export class CocktailCardComponent {
   private favService = inject(FavoritesService);
   location = inject(Location);
   drink = input.required<Drink | null>();
+  imageLoaded = false;
 
   isFavoritePage() {
     return this.location.path() === '/favorites';
@@ -31,5 +32,11 @@ export class CocktailCardComponent {
   removeFavorite() {
     const id = this.drink()?.idDrink;
     if (id) this.favService.remove(id);
+  }
+
+  onImageLoad() {
+    setTimeout(() => {
+      this.imageLoaded = true;
+    }, 400);
   }
 }

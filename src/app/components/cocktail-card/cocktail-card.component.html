@@ -3,9 +3,14 @@
   [@fadeInUp]
 >
   <figure>
+    @if (!imageLoaded) {
+    <span class="loading loading-spinner loading-xl text-primary"></span>
+    }
     <img
       [src]="drink()?.strDrinkThumb"
       [alt]="drink()?.strDrink"
+      (load)="onImageLoad()"
+      [class.hidden]="!imageLoaded"
       class="hover:scale-125 transition-all ease-in duration-700"
     />
   </figure>
